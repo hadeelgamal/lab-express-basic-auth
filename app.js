@@ -17,6 +17,9 @@ const app = express();
 
 // ℹ️ This function is getting exported from the config folder. It runs most middlewares
 require('./config')(app);
+require("./config/index")(app);
+require("./config/session.config")(app);// this will make the express server able to add a req.session property for every incoming request
+
 
 // default value for title local
 const projectName = 'lab-express-basic-auth';
@@ -31,8 +34,15 @@ app.use('/', index);
 const authRoutes = require('./routes/auth.routes');
 app.use('/auth', authRoutes)
 
+const mainRoutes = require('./routes/main.routes');
+app.use('/', mainRoutes)
+
+const privateRoutes = require('./routes/private.routes');
+app.use('/', privateRoutes)
+
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 require('./error-handling')(app);
+
 
 module.exports = app;
 
